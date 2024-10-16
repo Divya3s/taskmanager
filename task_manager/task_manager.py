@@ -4,7 +4,7 @@ import json
 import os
 
 
-
+# a Task class to represent individual tasks.
 class Task:
     def __init__(self, task_id, title):
         self.id = task_id
@@ -18,13 +18,16 @@ class Task:
 tasks = []  # List to hold tasks
 task_id_counter = 1  # To assign unique IDs to tasks
 
+# implement functions to manage tasks.
+
+# 1. add task 
 def add_task(title):
     global task_id_counter
     task = Task(task_id_counter, title)
     tasks.append(task)
     task_id_counter += 1
     print(f"Added task: {task}")
-
+# 2. view tasks
 def view_tasks():
     if not tasks:
         print("No tasks available.")
@@ -33,11 +36,14 @@ def view_tasks():
             status = "✔️" if task.completed else "❌"
             print(f"[{status}] {task.id}: {task.title}")
 
+
+# 3. delete task
 def delete_task(task_id):
     global tasks
     tasks = [task for task in tasks if task.id != task_id]
     print(f"Deleted task with ID: {task_id}")
 
+# 4. mark task as completed
 def mark_task_as_complete(task_id):
     for task in tasks:
         if task.id == task_id:
@@ -46,12 +52,13 @@ def mark_task_as_complete(task_id):
             return
     print(f"Task with ID {task_id} not found.")
 
-
+# 5. save tasks to json file
 def save_tasks(filename='tasks.json'):
     with open(filename, 'w') as file:
         json.dump([task.__dict__ for task in tasks], file)
     print("Tasks saved.")
 
+# load tasks
 def load_tasks(filename='tasks.json'):
     global tasks, task_id_counter
     filepath = os.path.join(os.path.dirname(__file__), filename)
@@ -65,7 +72,7 @@ def load_tasks(filename='tasks.json'):
     else:
         print("No saved tasks found. Starting with an empty task list.")
 
-
+# main program function
 def main():
     load_tasks()  # Load tasks at the start
     while True:
